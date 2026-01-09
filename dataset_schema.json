@@ -1,0 +1,171 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Emotion LLM Training Dataset Schema",
+    "description": "Schema for emotion-aware, age-appropriate conversation training data",
+    "type": "object",
+    "required": [
+        "examples"
+    ],
+    "properties": {
+        "examples": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "instruction",
+                    "input",
+                    "output",
+                    "metadata"
+                ],
+                "properties": {
+                    "instruction": {
+                        "type": "string",
+                        "description": "System instruction describing the AI's role and task",
+                        "example": "You are Mira, a friendly AI companion for children. Respond to the child's question while being aware of their emotional state."
+                    },
+                    "input": {
+                        "type": "object",
+                        "required": [
+                            "emotion",
+                            "confidence",
+                            "age_group",
+                            "question"
+                        ],
+                        "properties": {
+                            "emotion": {
+                                "type": "string",
+                                "enum": [
+                                    "happy",
+                                    "sad",
+                                    "angry",
+                                    "surprised",
+                                    "neutral",
+                                    "confused",
+                                    "excited",
+                                    "worried"
+                                ]
+                            },
+                            "confidence": {
+                                "type": "number",
+                                "minimum": 0.0,
+                                "maximum": 1.0
+                            },
+                            "age_group": {
+                                "type": "integer",
+                                "minimum": 5,
+                                "maximum": 16
+                            },
+                            "question": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 500
+                            },
+                            "memory": {
+                                "type": "object",
+                                "description": "Optional context from previous interactions",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "favorite_color": {
+                                        "type": "string"
+                                    },
+                                    "favorite_subject": {
+                                        "type": "string"
+                                    },
+                                    "recent_topics": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "output": {
+                        "type": "string",
+                        "description": "The AI's response - friendly, safe, and age-appropriate",
+                        "minLength": 10,
+                        "maxLength": 300
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "required": [
+                            "emotion_category",
+                            "age_group",
+                            "safety_level"
+                        ],
+                        "properties": {
+                            "emotion_category": {
+                                "type": "string",
+                                "enum": [
+                                    "happy",
+                                    "sad",
+                                    "angry",
+                                    "surprised",
+                                    "neutral",
+                                    "confused",
+                                    "excited",
+                                    "worried"
+                                ]
+                            },
+                            "age_group": {
+                                "type": "string",
+                                "enum": [
+                                    "5-7",
+                                    "8-10",
+                                    "11-13",
+                                    "14-16"
+                                ]
+                            },
+                            "safety_level": {
+                                "type": "string",
+                                "enum": [
+                                    "safe",
+                                    "requires_disclaimer",
+                                    "refusal"
+                                ],
+                                "description": "safe: normal response, requires_disclaimer: add uncertainty statement, refusal: politely decline"
+                            },
+                            "response_type": {
+                                "type": "string",
+                                "enum": [
+                                    "answer",
+                                    "reflection",
+                                    "encouragement",
+                                    "redirection",
+                                    "uncertainty",
+                                    "refusal"
+                                ]
+                            },
+                            "includes_memory": {
+                                "type": "boolean",
+                                "description": "Whether this example uses memory context"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "dataset_info": {
+            "type": "object",
+            "properties": {
+                "version": {
+                    "type": "string"
+                },
+                "total_examples": {
+                    "type": "integer"
+                },
+                "emotion_distribution": {
+                    "type": "object",
+                    "description": "Count of examples per emotion"
+                },
+                "age_distribution": {
+                    "type": "object",
+                    "description": "Count of examples per age group"
+                }
+            }
+        }
+    }
+}

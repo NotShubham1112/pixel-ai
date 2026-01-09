@@ -1,0 +1,27 @@
+{
+  "user_profile": {
+    "name": "Alex",
+    "age": 9,
+    "favorite_color": "blue",
+    "favorite_subject": "Science",
+    "consent_given": true,
+    "created_at": "2026-01-09T21:14:30.370192"
+  },
+  "short_term": [
+    {
+      "timestamp": "2026-01-09T21:14:30.371771",
+      "emotion": "happy",
+      "question": "Why is the sky blue?",
+      "response": "Great question! The sky looks blue because..."
+    }
+  ],
+  "long_term": {
+    "topics_discussed": [],
+    "interests": [],
+    "learning_goals": []
+  },
+  "metadata": {
+    "total_interactions": 1,
+    "last_interaction": "2026-01-09T21:14:30.371780"
+  }
+}

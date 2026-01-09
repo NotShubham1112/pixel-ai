@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Models (too large for GitHub)
+*.gguf
+models/*.gguf
+models/
+
+# Vector DB (optional, but good to exclude if large)
+knowledge_base/
+
+# Environments
+.env
+venv/
+env/

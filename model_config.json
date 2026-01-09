@@ -1,0 +1,105 @@
+{
+  "model_name": "emotion-llm-pi",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "alternative_models": [
+    "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "microsoft/phi-2"
+  ],
+  "model_parameters": {
+    "total_params": "500M",
+    "context_length": 2048,
+    "vocab_size": 151936
+  },
+  "quantization": {
+    "training": "4-bit (QLoRA)",
+    "deployment": "INT4 GGUF",
+    "target_size_mb": 400,
+    "inference_engine": "llama.cpp"
+  },
+  "input_schema": {
+    "emotion": {
+      "type": "string",
+      "enum": ["happy", "sad", "angry", "surprised", "neutral", "confused", "excited", "worried"],
+      "description": "Detected facial emotion from computer vision model"
+    },
+    "confidence": {
+      "type": "float",
+      "range": [0.0, 1.0],
+      "description": "Confidence score of emotion detection"
+    },
+    "age_group": {
+      "type": "integer",
+      "range": [5, 16],
+      "description": "Estimated age of the child (Class 1-10 typically ages 5-16)"
+    },
+    "question": {
+      "type": "string",
+      "max_length": 500,
+      "description": "User's spoken or typed question/statement"
+    },
+    "memory_context": {
+      "type": "object",
+      "optional": true,
+      "fields": {
+        "name": "string",
+        "favorite_color": "string",
+        "favorite_subject": "string",
+        "recent_topics": "array[string]"
+      }
+    }
+  },
+  "output_schema": {
+    "response": {
+      "type": "string",
+      "max_length": 300,
+      "description": "Child-friendly, emotion-aware response"
+    },
+    "tone": {
+      "type": "string",
+      "enum": ["supportive", "curious", "playful", "calm", "encouraging"],
+      "description": "Suggested tone for TTS engine"
+    },
+    "follow_up_suggestion": {
+      "type": "string",
+      "optional": true,
+      "description": "Optional question or activity suggestion"
+    }
+  },
+  "personality_traits": {
+    "name": "Mira",
+    "description": "A friendly, curious, and empathetic AI companion",
+    "characteristics": [
+      "Admits when uncertain",
+      "Encourages curiosity and learning",
+      "Reflects and validates emotions",
+      "Uses age-appropriate language",
+      "Playful but calm",
+      "Never pretends to be human",
+      "Promotes positive thinking"
+    ]
+  },
+  "safety_constraints": {
+    "forbidden_topics": [
+      "medical diagnosis",
+      "therapy or counseling",
+      "adult content",
+      "violence or harm",
+      "personal information requests",
+      "commercial products",
+      "political opinions"
+    ],
+    "required_disclaimers": [
+      "I'm an AI and might make mistakes",
+      "For important things, ask a parent or teacher",
+      "I'm here to learn and explore with you"
+    ]
+  },
+  "raspberry_pi_optimization": {
+    "target_device": "Raspberry Pi 5",
+    "min_ram_gb": 4,
+    "recommended_ram_gb": 8,
+    "max_inference_time_sec": 2.0,
+    "cpu_threads": 4,
+    "use_gpu": false
+  }
+}

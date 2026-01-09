@@ -1,0 +1,84 @@
+{
+  "user_profile": {
+    "name": "Shubham",
+    "age": 15,
+    "favorite_color": "25",
+    "favorite_subject": "maths",
+    "consent_given": true,
+    "created_at": "2026-01-09T21:17:55.532771"
+  },
+  "short_term": [
+    {
+      "timestamp": "2026-01-09T21:17:55.538874",
+      "emotion": "curious",
+      "question": "How do airplanes fly?",
+      "response": "That's an interesting question! I'm still learning, so I might not have the best answer yet."
+    },
+    {
+      "timestamp": "2026-01-09T21:17:55.539938",
+      "emotion": "neutral",
+      "question": "What is photosynthesis?",
+      "response": "That's something I'd like to learn more about too!"
+    },
+    {
+      "timestamp": "2026-01-09T21:20:22.588248",
+      "emotion": "neutral",
+      "question": "Computer Science",
+      "response": "Great question! Let me think about that..."
+    },
+    {
+      "timestamp": "2026-01-09T21:20:27.047878",
+      "emotion": "neutral",
+      "question": "heyy",
+      "response": "That's an interesting question! I'm still learning, so I might not have the best answer yet."
+    },
+    {
+      "timestamp": "2026-01-09T21:20:43.912725",
+      "emotion": "neutral",
+      "question": "what is ai",
+      "response": "That's an interesting question! I'm still learning, so I might not have the best answer yet."
+    },
+    {
+      "timestamp": "2026-01-09T21:41:36.394727",
+      "emotion": "neutral",
+      "question": "heeey",
+      "response": "I'm not sure about that, but it's a good thing to be curious about!"
+    },
+    {
+      "timestamp": "2026-01-09T21:44:51.180726",
+      "emotion": "neutral",
+      "question": "what is ai",
+      "response": "That's something I'd like to learn more about too!"
+    },
+    {
+      "timestamp": "2026-01-09T21:45:36.018565",
+      "emotion": "happy",
+      "question": "wow",
+      "response": "I'm not sure about that, but it's a good thing to be curious about!"
+    },
+    {
+      "timestamp": "2026-01-09T21:48:08.130347",
+      "emotion": "neutral",
+      "question": "heyy",
+      "response": "That's something I'd like to learn more about too!"
+    },
+    {
+      "timestamp": "2026-01-09T21:52:35.678517",
+      "emotion": "neutral",
+      "question": "hey",
+      "response": "Sorry, I'm having trouble. Please try again!"
+    }
+  ],
+  "long_term": {
+    "topics_discussed": [
+      "space",
+      "science"
+    ],
+    "interests": [],
+    "learning_goals": []
+  },
+  "metadata": {
+    "total_interactions": 12,
+    "last_interaction": "2026-01-09T21:52:35.678530"
+  }
+}
