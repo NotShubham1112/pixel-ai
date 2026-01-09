@@ -10,7 +10,7 @@ from typing import List, Dict, Optional
 
 # Install dependencies
 print("Installing RAG dependencies...")
-os.system("pip install -q chromadb sentence-transformers")
+# os.system("pip install -q chromadb sentence-transformers")
 
 import chromadb
 from chromadb.config import Settings
@@ -139,7 +139,7 @@ class RAGSystem:
                 context += f"{i}. {result['text']}\n"
         
         # Create augmented prompt
-        prompt = f"""You are Mira, a friendly AI assistant for children.
+        prompt = f"""You are Pixel, a friendly AI assistant for children.
 
 Context: The child is {age} years old and seems {emotion}.
 

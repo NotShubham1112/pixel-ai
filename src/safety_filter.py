@@ -67,12 +67,14 @@ class SafetyFilter:
         self.redirected_count = 0
         
     def check_forbidden_content(self, text: str) -> SafetyResult:
-        """Check for forbidden keywords."""
+        """Check for forbidden keywords using word boundaries."""
         text_lower = text.lower()
         
         # Check high severity
         for keyword in self.FORBIDDEN_KEYWORDS["high"]:
-            if keyword in text_lower:
+            # Use regex for word boundaries to avoid Scunthorpe problem (e.g., 'kill' in 'skills')
+            pattern = rf"\b{re.escape(keyword)}\b"
+            if re.search(pattern, text_lower):
                 self.blocked_count += 1
                 return SafetyResult(
                     is_safe=False,
@@ -82,7 +84,8 @@ class SafetyFilter:
         
         # Check medium severity
         for keyword in self.FORBIDDEN_KEYWORDS["medium"]:
-            if keyword in text_lower:
+            pattern = rf"\b{re.escape(keyword)}\b"
+            if re.search(pattern, text_lower):
                 return SafetyResult(
                     is_safe=True,  # Allow but flag
                     reason=f"Contains sensitive content: {keyword}",
@@ -91,7 +94,9 @@ class SafetyFilter:
         
         # Check low severity (emotional distress)
         for keyword in self.FORBIDDEN_KEYWORDS["low"]:
-            if keyword in text_lower:
+            # Low severity can be partial matches if needed, but word boundaries are safer
+            pattern = rf"\b{re.escape(keyword)}\b"
+            if re.search(pattern, text_lower):
                 return SafetyResult(
                     is_safe=True,
                     reason=f"Emotional content detected: {keyword}",

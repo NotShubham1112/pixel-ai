@@ -43,7 +43,7 @@ huggingface-cli download Qwen/Qwen2.5-0.5B-Instruct-GGUF qwen2.5-0.5b-instruct-q
 ```bash
 # Basic test
 cd llama.cpp
-./build/bin/Release/main.exe -m ../models/qwen2.5-0.5b-instruct-q4_k_m.gguf -p "You are a friendly AI for children. A happy 9-year-old asks: Why is the sky blue?" -n 200
+./build/bin/Release/main.exe -m ../models/qwen2.5-0.5b-instruct-q4_k_m.gguf -p "You are a friendly AI named Pixel for children. A happy 9-year-old asks: Why is the sky blue?" -n 200
 
 # Or use our Python wrapper
 cd ../llmemo

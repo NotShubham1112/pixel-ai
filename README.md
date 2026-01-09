@@ -1,5 +1,5 @@
-# 🧠 Emotion Recognition LLM for Raspberry Pi
-## Child-Friendly AI Companion for AI Mirror Project
+# 🧠 Pixel: Emotion-Recognition AI for Raspberry Pi
+## Professional AI Companion for the AI Mirror Project
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Platform](https://img.shields.io/badge/Platform-Raspberry%20Pi-red)
@@ -7,7 +7,7 @@
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
 
 > [!NOTE]
-> **Project Goal**: A complete, production-ready pipeline for building, training, and deploying an emotion-aware, offline LLM optimized for Raspberry Pi 5. Designed specifically for children aged 5-16 with comprehensive safety features and ethical guidelines.
+> **Project Goal**: A complete, production-ready pipeline for building, training, and deploying an emotion-aware, offline LLM named **Pixel**. Optimized for Raspberry Pi 5 and designed for students/children aged 8-16 with advanced safety features and ethical memory management.
 
 ---
 
@@ -15,55 +15,42 @@
 
 ### Purpose
 Create an AI companion for an **Emotion Recognition AI Mirror** that:
-- ✅ Recognizes facial expressions and emotional context
-- ✅ Understands age-appropriate conversation
-- ✅ Responds with safe, friendly, educational answers
-- ✅ Operates **100% offline** on Raspberry Pi
-- ✅ Includes comprehensive safety filters
-- ✅ Respects privacy with local-only data storage
+- ✅ **Recognizes Emotions**: Adapts tone based on detected facial expressions.
+- ✅ **Professional Identity**: Acts as **Pixel**, a helpful and calm AI (similar to Claude).
+- ✅ **Offline Privacy**: Operates 100% locally on Raspberry Pi.
+- ✅ **Structured Knowledge**: Responds with beautiful **Markdown** (Headings, Passages).
+- ✅ **Ethical Memory**: Remembers context across conversations while respecting privacy.
 
 ### Key Features
 | Feature | Description |
 |---------|-------------|
 | **🎭 Emotion-Aware** | Adapts responses based on detected emotions (happy, sad, angry, etc.) |
-| **👶 Age-Appropriate** | Adjusts language complexity for ages 5-16 |
-| **🛡️ Safety-First** | Multi-layer content filtering and moderation |
-| **🔒 Privacy** | All data stored locally, no cloud dependencies |
-| **🧠 Memory System** | Ethical, consent-based conversation context |
-| **⚡ Optimized** | Runs efficiently on Raspberry Pi 5 (4GB/8GB) |
+| **🤖 Pixel Persona** | Professional, friendly, and structured "Claude-like" personality |
+| **🛡️ Safety-First** | Word-boundary filtering prevents false positives (e.g., "skills" vs "kill") |
+| **📖 Markdown UI** | Rich terminal output with H1, H2, and passage formatting |
+| **🧠 Memory System** | Context-aware chat with a 2048-token window |
+| **⚡ Optimized** | Runs lightning-fast on Raspberry Pi 5 (GGUF 2-bit/4-bit) |
 
 ---
 
 ## 📂 Repository Structure
 
-The project is organized as follows:
-
 ```
 llmemo/
 ├── 📁 src/                        # Core application logic
-│   ├── run_ai_mirror.py          # Main entry point
-│   ├── inference_engine.py       # LLM inference wrapper
-│   ├── memory_manager.py         # Context & Memory
-│   └── safety_filter.py          # Content moderation
-├── 📁 docs/                       # Documentation & Guides
-│   ├── HOW_TO_RUN.md             # Running instructions
-│   ├── DEPLOY_RASPBERRY_PI.md    # Pi setup guide
-│   └── ...
-├── 📁 scripts/                    # Utility scripts
-│   ├── train_lora.py             # Training pipeline
-│   ├── quantize_model.py         # Model optimization
-│   └── build_knowledge_base.py   # RAG data generation
-├── 📁 data/                       # Datasets & Memory files
-├── 📁 knowledge_base/             # RAG content
+│   ├── run_ai_mirror.py          # Main entry point (Chat UI)
+│   ├── emotion_prompt_template.py # Pixel's brain & prompts
+│   ├── memory_manager.py         # Context & Persistence
+│   └── safety_filter.py          # Smart content moderation
+├── 📁 docs/                       # Guides & Documentation
+├── 📁 scripts/                    # Utility scripts (Train, Quantize)
+├── 📁 data/                       # User memory & storage
 └── requirements_training.txt      # Dependencies
 ```
 
 ---
 
 ## 🚀 Quick Start
-
-> [!IMPORTANT]
-> **Prerequisites**: Raspberry Pi 5 (8GB recommended) or PC with GPU for training.
 
 ### 1. Installation
 ```bash
@@ -73,16 +60,18 @@ cd ai-mirror
 
 # Install dependencies
 pip install -r requirements_training.txt
+pip install rich  # For beautiful outputs
 ```
 
 ### 2. Run the System
-To start the full AI Mirror system on your machine or Raspberry Pi:
-
+To start chatting with **Pixel**:
 ```bash
 python src/run_ai_mirror.py
 ```
 
-For detailed setup, see [**HOW_TO_RUN.md**](docs/HOW_TO_RUN.md).
+**Commands inside chat:**
+- `/reset`: Clear Pixel's memory and start a fresh topic.
+- `quit`: Exit the system.
 
 ---
 
@@ -90,27 +79,27 @@ For detailed setup, see [**HOW_TO_RUN.md**](docs/HOW_TO_RUN.md).
 
 ```mermaid
 graph TD
-    User[User Input/Camera] --> Emotion[Emotion Engine]
-    Emotion --> Prompt[Prompt Generator]
-    Prompt --> Safety[Safety Filter]
-    Safety --> RAG{RAG System}
-    RAG -->|Provide Context| LLM[Quantized LLM]
-    LLM --> Output[Response]
-    Output --> Memory[Memory System]
+    User[User Input] --> Emotion[Emotion Detection]
+    Emotion --> Pixel[Pixel Chat Engine]
+    Pixel --> Safety[Word-Boundary Safety]
+    Safety --> LLM[Quantized LLM]
+    LLM --> UI[Rich Markdown Output]
+    UI --> Memory[Conversation Persistence]
 ```
 
 ---
 
-## 📖 Documentation
+## 📄 License & Author
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-*   [**Deployment Guide**](docs/deploy_raspberry_pi.md): How to set up your Raspberry Pi.
-*   [**Training Guide**](docs/train_lora.py): How to fine-tune your own model.
+**About the Author**
+Created by **Shubham Kambli**. Passionate about AI, Embedded Systems, and Edge Computing.
+[GitHub Profile](https://github.com/NotShubham1112)
 *   [**Ethical Guidelines**](docs/ethical_guidelines.md): Safety and privacy standards.
 *   [**RAG Architecture**](docs/RAG_ARCHITECTURE.md): How the knowledge base works.
 
 ---
 
-## 🛡️ Safety & Ethics
 
 This project prioritizes **Safety by Design**:
 1.  **Filter**: Blocks inappropriate content *before* it reaches the LLM.

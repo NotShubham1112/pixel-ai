@@ -13,106 +13,144 @@ Integrates:
 import sys
 import time
 from pathlib import Path
+from rich.console import Console
+from rich.markdown import Markdown
+
+# Initialize Rich Console
+console = Console()
 
 # Configuration
 CONFIG = {
     "min_confidence": 0.5,
     "default_age": 9,
     "max_history": 10,
-    "rag_enabled": True
+    "rag_enabled": False,
+    "mock_llm_enabled": False
 }
 
 def print_system_status():
-    print("\n" + "="*60)
-    print("🚀 STARTING AI MIRROR SYSTEM")
-    print("="*60)
-    print(f"• Platform: {sys.platform}")
-    print(f"• Python: {sys.version.split()[0]}")
-    print(f"• RAG: {'Enabled' if CONFIG['rag_enabled'] else 'Disabled'}")
+    console.print("\n" + "="*60, style="blue")
+    console.print("🚀 STARTING AI MIRROR SYSTEM", style="bold cyan")
+    console.print("="*60, style="blue")
+    console.print(f"• Platform: {sys.platform}")
+    console.print(f"• Python: {sys.version.split()[0]}")
+    console.print(f"• RAG: {'Enabled' if CONFIG['rag_enabled'] else 'Disabled'}")
 
 def main():
     print_system_status()
     
     # 1. LOAD COMPONENTS
-    print("\n[1/5] Loading Safety & Memory Components...")
+    console.print("\n[1/5] Loading Safety & Memory Components...", style="bold yellow")
     try:
         from safety_filter import SafetyFilter
         from memory_manager import MemoryManager
         
         safety = SafetyFilter()
         memory = MemoryManager(storage_path="data/ai_mirror_memory.json")
-        print("   ✓ Safety Filter active")
-        print(f"   ✓ Memory active ({memory.get_stats()['total_interactions']} interactions)")
+        console.print("   ✓ Safety Filter active", style="green")
+        console.print(f"   ✓ Memory active ({memory.get_stats()['total_interactions']} interactions)", style="green")
     except ImportError as e:
-        print(f"   ❌ Failed to load components: {e}")
+        console.print(f"   ❌ Failed to load components: {e}", style="bold red")
         sys.exit(1)
 
     # 2. INITIALIZE RAG
-    print("\n[2/5] Initializing RAG Knowledge Base...")
+    console.print("\n[2/5] Initializing RAG Knowledge Base...", style="bold yellow")
     rag = None
     if CONFIG['rag_enabled']:
         try:
             from rag_system import RAGSystem
             rag = RAGSystem()
             doc_count = rag.collection.count()
-            print(f"   ✓ RAG System ready ({doc_count} documents)")
+            console.print(f"   ✓ RAG System ready ({doc_count} documents)", style="green")
             if doc_count == 0:
-                print("   ⚠ Knowledge base empty! Run 'python build_knowledge_base.py'")
+                console.print("   ⚠ Knowledge base empty! Run 'python build_knowledge_base.py'", style="yellow")
         except Exception as e:
-            print(f"   ⚠ RAG failed (running without knowledge): {e}")
+            console.print(f"   ⚠ RAG failed (running without knowledge): {e}", style="yellow")
 
     # 3. LOAD LLM (Auto-select 2-bit)
-    print("\n[3/5] Loading LLM...")
+    console.print("\n[3/5] Loading LLM...", style="bold yellow")
+    llm = None
     try:
-        from llama_cpp import Llama
-    except ImportError:
-        print("   Installing llama-cpp-python...")
-        import subprocess
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "llama-cpp-python"])
-        from llama_cpp import Llama
-
-    # Find best model (Priority: Q2 > Q4 > Q5)
-    model_path = None
-    models_dir = Path("models")
-    if models_dir.exists():
-        for q in ["Q2", "Q4", "Q5"]:
-            found = list(models_dir.glob(f"*{q}*.gguf"))
-            if found:
-                model_path = found[0]
-                break
-    
-    if not model_path:
-        print("   ❌ No model found in models/ directory!")
-        print("   Run: python download_2bit.py")
-        sys.exit(1)
+        if CONFIG.get('mock_llm_enabled'):
+            raise ImportError("Mock mode enabled")
+            
+        try:
+            from llama_cpp import Llama
+        except ImportError:
+            console.print("   Installing llama-cpp-python...", style="yellow")
+            import subprocess
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "llama-cpp-python"])
+            from llama_cpp import Llama
+            
+        # Find best model (Priority: Q2 > Q4 > Q5)
+        model_path = None
+        models_dir = Path("models")
+        if models_dir.exists():
+            for q in ["Q2", "Q4", "Q5"]:
+                found = list(models_dir.glob(f"*{q}*.gguf"))
+                if found:
+                    model_path = found[0]
+                    break
         
-    print(f"   ✓ Loading {model_path.name}...")
-    llm = Llama(
-        model_path=str(model_path),
-        n_ctx=2048,
-        n_threads=4,  # Optimized for Pi 4/5
-        verbose=False
-    )
-    print("   ✓ LLM Ready")
+        if not model_path:
+            raise FileNotFoundError("No model found in models/ directory!")
+            
+        console.print(f"   ✓ Loading {model_path.name}...", style="green")
+        llm = Llama(
+            model_path=str(model_path),
+            n_ctx=2048,
+            n_threads=4,  # Optimized for Pi 4/5
+            verbose=False
+        )
+        console.print("   ✓ LLM Ready", style="green")
+        
+    except Exception as e:
+        console.print(f"   ⚠ LLM load failed ({e}). using MOCK LLM for testing.", style="yellow")
+        
+        class MockLlama:
+            def __call__(self, prompt, **kwargs):
+                return {
+                    'choices': [{
+                        'text': " [MOCK] I heard you! I'm running in mock mode because the real brain couldn't load. How are you?"
+                    }]
+                }
+            
+            def create_chat_completion(self, messages, **kwargs):
+                return {
+                    'choices': [{
+                        'message': {
+                            'content': " [MOCK CHAT] I heard you! I'm running in mock mode because the real brain couldn't load. How are you?"
+                        }
+                    }]
+                }
+        llm = MockLlama()
 
     # 4. START LOOP
-    print("\n[4/5] Starting Emotion Engine...")
-    print("   ✓ Emotion Context: Ready")
-    print("\n[5/5] System Ready! Waiting for input...")
-    print("="*60 + "\n")
+    console.print("\n[4/5] Starting Emotion Engine...", style="bold yellow")
+    console.print("   ✓ Emotion Context: Ready", style="green")
+    console.print("\n[5/5] System Ready! Waiting for input...", style="bold green")
+    console.print("="*60 + "\n", style="blue")
 
     # Main Interaction Loop
     while True:
         try:
-            # A. GET INPUT (Simulated for now, replace with Voice/Camera)
-            user_input = input("\nYou: ").strip()
+            # A. GET INPUT
+            user_input = console.input("\n[bold green]You:[/bold green] ").strip()
             if not user_input: continue
+            
+            # COMMANDS
             if user_input.lower() in ['quit', 'exit']: break
+            if user_input.lower() == '/reset':
+                memory.clear_history()
+                console.print("\n[bold yellow]✨ Conversation and memory context reset![/bold yellow]\n")
+                continue
 
             start_time = time.time()
 
             # B. SAFETY CHECK (Input)
-            if not safety.filter_input(user_input, age=CONFIG['default_age']).is_safe:
+            safety_result = safety.filter_input(user_input, age=CONFIG['default_age'])
+            if not safety_result.is_safe:
+                print(f"DEBUG: Input Blocked. Reason: {safety_result.reason} | Severity: {safety_result.severity}")
                 print("AI: I can't talk about that. Let's talk about something else! 😊")
                 continue
 
@@ -123,25 +161,57 @@ def main():
                 # Extract just the context part if needed, or use the full augmented prompt
 
             # D. GENERATE RESPONSE
-            # If RAG provided a full prompt, use it. Otherwise build standard one.
+            # Use Chat Completion API for better instruction following with Qwen
+            messages = []
+            
             if rag and context:
-                final_prompt = context
+                # If RAG is active, treating context as system info
+                messages = [
+                    {"role": "system", "content": "You are Pixel, a friendly AI companion. Use the provided context to answer."},
+                    {"role": "user", "content": f"Context: {context}\n\nQuestion: {user_input}"}
+                ]
             else:
-                final_prompt = f"""You are Mira, a friendly AI companion.
-User: {user_input}
-Mira:"""
+                from emotion_prompt_template import EmotionPromptTemplate
+                # Mock emotion
+                current_emotion = "neutral" 
+                emotion_confidence = 0.9
+                
+                # Fetch conversation history from memory
+                history = memory.get_recent_interactions(n=CONFIG['max_history'])
+                memory_stats = memory.get_context()
+                
+                messages = EmotionPromptTemplate.create_chat_messages(
+                    emotion=current_emotion,
+                    confidence=emotion_confidence,
+                    age_group=CONFIG['default_age'],
+                    question=user_input,
+                    history=history,
+                    memory_stats=memory_stats
+                )
 
-            response = llm(
-                final_prompt,
-                max_tokens=200,
-                temperature=0.7,
-                stop=["User:", "\n\n", "Mira:"],
-                echo=False
-            )
-            answer = response['choices'][0]['text'].strip()
+            # Check if using MockLLM or Real LLM
+            if hasattr(llm, 'create_chat_completion'):
+                response = llm.create_chat_completion(
+                    messages=messages,
+                    max_tokens=800,  # Allow for full explanations
+                    temperature=0.7,
+                    top_p=0.9,
+                    top_k=40,
+                    repeat_penalty=1.1,
+                    stop=["User:", "Pixel:", "System:"],
+                )
+                answer = response['choices'][0]['message']['content'].strip()
+            else:
+                # Fallback for MockLLM
+                print("DEBUG: Using Mock LLM fallback")
+                answer = llm(str(messages))['choices'][0]['text']
 
             # E. SAFETY CHECK (Output)
-            if not safety.filter_output(answer, age=CONFIG['default_age']).is_safe:
+            # Increase max length to 5000 to allow detailed educational answers
+            out_safety = safety.validate_output(answer, max_length=5000)
+            if not out_safety.is_safe:
+                print(f"DEBUG: Output Blocked. Reason: {out_safety.reason} | Severity: {out_safety.severity}")
+                print(f"DEBUG: BLOCKED TEXT: {answer}")
                 answer = "I'm having a bit of trouble thinking right now. Ask me again?"
 
             # F. SAVE MEMORY
@@ -149,14 +219,21 @@ Mira:"""
 
             # G. OUTPUT
             latency = time.time() - start_time
-            print(f"AI: {answer}")
-            print(f"    (⏱️ {latency:.2f}s | 🧠 RAG: {'Yes' if rag else 'No'})")
+            console.print("\n" + "-"*40, style="blue")
+            console.print("🤖 [bold cyan]Pixel:[/bold cyan]")
+            
+            # Render the response as Markdown
+            md = Markdown(answer)
+            console.print(md)
+            
+            console.print("-"*40, style="blue")
+            console.print(f"    (⏱️ {latency:.2f}s)\n")
 
         except KeyboardInterrupt:
-            print("\nShutting down...")
+            console.print("\n[bold red]Shutting down...[/bold red]")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}")
+            console.print(f"\n❌ Error: {e}", style="bold red")
 
 if __name__ == "__main__":
     main()

@@ -176,11 +176,15 @@ class MemoryManager:
         """
         return self.memory["short_term"][-n:]
     
-    def clear_short_term(self):
+    def clear_history(self):
         """Clear short-term memory (conversation history)."""
         self.memory["short_term"] = []
         self._save_memory()
-        print("✓ Short-term memory cleared")
+        return True
+    
+    def clear_short_term(self):
+        """Alias for clear_history."""
+        return self.clear_history()
     
     def clear_all(self):
         """Clear all memory (requires confirmation in production)."""

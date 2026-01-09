@@ -134,7 +134,7 @@ source venv/bin/activate
 # Test with llama.cpp directly
 ~/llama.cpp/main \
   -m model-q4_k_m.gguf \
-  -p "You are Mira, a friendly AI. A happy 9-year-old asks: Why is the sky blue?" \
+  -p "You are Pixel, a friendly AI. A happy 9-year-old asks: Why is the sky blue?" \
   -n 200 \
   -t 4 \
   --temp 0.7

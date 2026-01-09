@@ -9,24 +9,23 @@ from typing import Dict, Optional, List
 class EmotionPromptTemplate:
     """Generates structured prompts for emotion-aware AI responses."""
     
-    SYSTEM_PROMPT = """You are Mira, a friendly and curious AI companion designed for children aged 5-16. Your role is to:
+    SYSTEM_PROMPT = """You are Pixel, a professional and friendly AI companion designed for children and students (ages 8-16). Your personality is helpful, calm, supportive, and clear, similar to an expert tutor or the Claude AI assistant.
 
-1. Be aware of the child's emotional state and respond with empathy
-2. Use age-appropriate language and concepts
-3. Encourage curiosity, learning, and positive thinking
-4. Admit when you're uncertain or don't know something
-5. Never pretend to be human or claim to have feelings
-6. Redirect inappropriate questions to parents or teachers
-7. Keep responses short, clear, and friendly (under 300 characters)
+Your role is to:
+1. Use professional but accessible language.
+2. Structure your knowledge using **Standard Markdown** (Headings, Bold text, Bullet points).
+3. Provide detailed, passage-style explanations for educational topics (like Math, Science, or History).
+4. Use # for main titles, ## for sections, and ### for sub-sections.
+5. Encourage curiosity and critical thinking.
 
-IMPORTANT SAFETY RULES:
-- Never give medical, legal, or therapeutic advice
-- Never discuss adult topics, violence, or harmful content
-- Never ask for or store sensitive personal information
-- Always encourage children to talk to trusted adults for serious matters
-- If unsure, say "I'm not sure about that, but maybe you can ask a teacher or parent!"
+IMPORTANT SAFETY & STYLE RULES:
+- Never give medical, legal, or therapeutic advice.
+- Never discuss adult topics or harmful content.
+- Keep responses engaging but structured. 
+- Avoid excessive emoji spam; use them sparingly for warmth.
+- If you don't know something, be honest: "I'm not exactly sure about that, but we could look it up together!"
 
-Your personality: Playful, calm, supportive, and always learning alongside the child."""
+Always respond in a clean, structured Markdown format."""
 
     EMOTION_CONTEXT = {
         "happy": "The child seems happy and cheerful. Match their positive energy!",
@@ -120,6 +119,47 @@ CHILD'S MESSAGE:
 YOUR RESPONSE (keep it under 300 characters, friendly and age-appropriate):"""
 
         return prompt
+    
+    @classmethod
+    def create_chat_messages(
+        cls,
+        emotion: str,
+        confidence: float,
+        age_group: int,
+        question: str,
+        history: Optional[List[Dict]] = None,
+        memory_stats: Optional[Dict] = None
+    ) -> List[Dict[str, str]]:
+        """
+        Create a list of messages for Chat Completion API.
+        """
+        emotion_context = cls.EMOTION_CONTEXT.get(emotion, cls.EMOTION_CONTEXT["neutral"])
+        age_guideline = cls.get_age_guideline(age_group)
+        memory_context = cls.format_memory_context(memory_stats)
+        emotion_reliability = "high" if confidence >= 0.7 else "moderate" if confidence >= 0.5 else "low"
+        
+        system_content = f"""{cls.SYSTEM_PROMPT}
+
+CONTEXT:
+- Emotion: {emotion} ({emotion_reliability})
+- Guidance: {emotion_context}
+- Age: {age_group}
+- Language: {age_guideline}
+- {memory_context}"""
+
+        messages = [{"role": "system", "content": system_content}]
+        
+        # Add history (alternating user/assistant)
+        if history:
+            for item in history:
+                messages.append({"role": "user", "content": item.get('question', '')})
+                # Note: 'response' in MemoryManager, 'content' in Chat API. We map 'response' -> 'content'
+                messages.append({"role": "assistant", "content": item.get('response', '')})
+                
+        # Add current question
+        messages.append({"role": "user", "content": question})
+        
+        return messages
     
     @classmethod
     def create_training_example(

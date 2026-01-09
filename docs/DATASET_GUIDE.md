@@ -40,7 +40,7 @@ Edit `add_quality_dataset.py` and add more examples like this:
 
 ```python
 {
-    "instruction": "You are Mira, a friendly AI companion. Answer clearly and accurately.",
+    "instruction": "You are Pixel, a friendly AI companion. Answer clearly and accurately.",
     "input": {
         "emotion": "neutral",
         "confidence": 0.85,
@@ -149,7 +149,7 @@ Create a file `my_qa.json`:
   },
   "examples": [
     {
-      "instruction": "You are Mira, a friendly AI companion. Answer clearly.",
+      "instruction": "You are Pixel, a friendly AI companion. Answer clearly.",
       "input": {
         "emotion": "curious",
         "confidence": 0.85,

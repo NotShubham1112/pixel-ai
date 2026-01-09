@@ -135,11 +135,11 @@ while True:
             rag_hits += 1
         else:
             # Simple prompt
-            prompt = f"""You are Mira, a friendly AI assistant for children.
+            prompt = f"""You are Pixel, a friendly AI assistant for children.
 
 User: {question}
 
-Mira:"""
+Pixel:"""
         
         # Generate response
         response = llm(
