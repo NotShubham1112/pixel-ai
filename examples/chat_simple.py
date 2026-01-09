@@ -110,11 +110,11 @@ while True:
             continue
         
         # Generate response
-        prompt = f"""You are Mira, a friendly and helpful AI assistant.
+        prompt = f"""You are Pixel, a friendly and helpful AI assistant.
 
 User: {question}
 
-Mira:"""
+Pixel:"""
         
         response = llm(
             prompt,

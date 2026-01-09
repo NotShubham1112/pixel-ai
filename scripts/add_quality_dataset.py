@@ -17,7 +17,7 @@ def create_general_qa_dataset():
     examples = [
         # Science Questions
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "curious",
                 "confidence": 0.85,
@@ -36,7 +36,7 @@ def create_general_qa_dataset():
             }
         },
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "neutral",
                 "confidence": 0.80,
@@ -57,7 +57,7 @@ def create_general_qa_dataset():
         
         # Math Questions
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "confused",
                 "confidence": 0.82,
@@ -78,7 +78,7 @@ def create_general_qa_dataset():
         
         # Technology Questions
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "excited",
                 "confidence": 0.88,
@@ -99,7 +99,7 @@ def create_general_qa_dataset():
         
         # General Knowledge
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "neutral",
                 "confidence": 0.75,
@@ -120,7 +120,7 @@ def create_general_qa_dataset():
         
         # More examples - add as many as you want!
         {
-            "instruction": "You are Mira, a friendly AI companion. Answer the question clearly and accurately.",
+            "instruction": "You are Pixel, a friendly AI companion. Answer the question clearly and accurately.",
             "input": {
                 "emotion": "curious",
                 "confidence": 0.83,

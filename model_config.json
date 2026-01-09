@@ -19,17 +19,32 @@
   "input_schema": {
     "emotion": {
       "type": "string",
-      "enum": ["happy", "sad", "angry", "surprised", "neutral", "confused", "excited", "worried"],
+      "enum": [
+        "happy",
+        "sad",
+        "angry",
+        "surprised",
+        "neutral",
+        "confused",
+        "excited",
+        "worried"
+      ],
       "description": "Detected facial emotion from computer vision model"
     },
     "confidence": {
       "type": "float",
-      "range": [0.0, 1.0],
+      "range": [
+        0.0,
+        1.0
+      ],
       "description": "Confidence score of emotion detection"
     },
     "age_group": {
       "type": "integer",
-      "range": [5, 16],
+      "range": [
+        5,
+        16
+      ],
       "description": "Estimated age of the child (Class 1-10 typically ages 5-16)"
     },
     "question": {
@@ -56,7 +71,13 @@
     },
     "tone": {
       "type": "string",
-      "enum": ["supportive", "curious", "playful", "calm", "encouraging"],
+      "enum": [
+        "supportive",
+        "curious",
+        "playful",
+        "calm",
+        "encouraging"
+      ],
       "description": "Suggested tone for TTS engine"
     },
     "follow_up_suggestion": {
@@ -66,7 +87,7 @@
     }
   },
   "personality_traits": {
-    "name": "Mira",
+    "name": "Pixel",
     "description": "A friendly, curious, and empathetic AI companion",
     "characteristics": [
       "Admits when uncertain",

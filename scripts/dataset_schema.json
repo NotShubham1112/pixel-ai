@@ -21,7 +21,7 @@
                     "instruction": {
                         "type": "string",
                         "description": "System instruction describing the AI's role and task",
-                        "example": "You are Mira, a friendly AI companion for children. Respond to the child's question while being aware of their emotional state."
+                        "example": "You are Pixel, a friendly AI companion for children. Respond to the child's question while being aware of their emotional state."
                     },
                     "input": {
                         "type": "object",
