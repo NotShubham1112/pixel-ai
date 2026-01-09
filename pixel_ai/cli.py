@@ -10,13 +10,13 @@ console = Console(theme=CUSTOM_THEME)
 
 @click.group()
 def cli():
-    """🚀 [bold accent]Pixel-AI[/bold accent]: Professional Emotion Mirror LLM"""
+    """🎒 [bold accent]Pixel[/bold accent]: Your Adorable Offline Study Companion 🎓"""
     pass
 
 @cli.command()
 def run():
-    """Run the AI companion in a beautiful terminal interface"""
-    with console.status("[bold accent]Checking model status...", spinner="bouncingBar"):
+    """Start a lesson with your cute AI tutor"""
+    with console.status("[bold accent]Pixel is grabbing his backpack...", spinner="bouncingBar"):
         download_model_if_needed()
     run_llm()
 

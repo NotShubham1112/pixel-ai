@@ -7,7 +7,7 @@ from rich.prompt import Prompt
 from rich.live import Live
 from rich.text import Text
 from rich.theme import Theme
-from .config import MODEL_PATH, MAX_TOKENS, TEMPERATURE
+from .config import MODEL_PATH, MAX_TOKENS, TEMPERATURE, SYSTEM_PROMPT
 
 # Custom Theme: Orange accent (#C15F3C), Warm off-white (#faf9f5), Charcoal (#2b2b2b)
 CUSTOM_THEME = Theme({
@@ -32,13 +32,13 @@ def run_llm():
         ))
         return
 
-    with console.status("[bold accent]Initializing Pixel-AI engine...", spinner="dots"):
+    with console.status("[bold accent]Pixel is setting up his desk... 🎒✨", spinner="dots"):
         model = Llama(model_path=MODEL_PATH, verbose=False)
     
     console.clear()
     console.print(Panel(
-        Markdown("# 🧠 Pixel-AI: Emotion Mirror\n*Professional Grade AI Interface*"),
-        subtitle="Type 'exit' to quit",
+        Markdown("# 🎒 Pixel: Your Adorable Study Buddy\n*Your friendly offline school tutor!* ✨"),
+        subtitle="Type 'exit' to head home",
         border_style="accent",
         title_align="left",
         subtitle_align="left"
@@ -50,13 +50,16 @@ def run_llm():
             prompt = Prompt.ask("\n[bold accent]You[/bold accent]")
             
             if prompt.lower() in ["exit", "quit", "bye"]:
-                console.print("[bold accent]Exiting Pixel-AI. Have a great day![/bold accent]")
+                console.print("[bold accent]Goodbye! Don't forget to do your homework! 🎓[/bold accent]")
                 break
 
-            # Thinking state
-            with console.status("[italic accent]Pixel is thinking...", spinner="bouncingBall"):
+            # Thinking state - School-themed
+            with console.status("[italic accent]Pixel is sharpening pencils... ✏️", spinner="bouncingBall"):
+                # Constructing a simple Instruct template with the new persona
+                full_prompt = f"<|im_start|>system\n{SYSTEM_PROMPT}<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
+                
                 stream = model(
-                    prompt, 
+                    full_prompt, 
                     max_tokens=MAX_TOKENS, 
                     temperature=TEMPERATURE,
                     stop=["<|im_end|>", "You:", "Pixel-AI:"],
@@ -67,7 +70,7 @@ def run_llm():
             response_text = ""
             panel = Panel(
                 Markdown(""),
-                title="[bold accent]Pixel-AI[/bold accent]",
+                title="[bold accent]Pixel the Tutor[/bold accent] 📚",
                 border_style="accent",
                 padding=(1, 2),
                 title_align="left"
@@ -82,4 +85,4 @@ def run_llm():
                     live.refresh()
             
     except KeyboardInterrupt:
-        console.print("\n[bold accent]Interrupted. Exiting...[/bold accent]")
+        console.print("\n[bold accent]Class dismissed! Exiting... 🏫[/bold accent]")
