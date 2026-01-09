@@ -52,36 +52,36 @@ llmemo/
 
 ## 🚀 Quick Start
 
-### 1. Installation
-**Option A: For Users (Pip Install)**
+### 1. Installation & Setup
+The fastest way for others to install **Pixel-AI** is directly from GitHub:
+
 ```bash
-# Clone and Install as a global command
-git clone https://github.com/NotShubham1112/ai-mirror.git
-cd ai-mirror
-pip install -e .
+# 1. Install the package directly
+pip install git+https://github.com/NotShubham1112/pixel-ai.git
+
+# 2. Download the model (350MB)
+pixel-ai install
 ```
 
-**Option B: For Developers**
-```bash
-# Install dependencies normally
-pip install -r requirements_training.txt
-pip install rich
-```
+> [!TIP]
+> This method doesn't require cloning the repository manually!
 
 ### 2. Run the System
-If you installed via **Option A**, you can run Pixel from anywhere:
+Once installed, you can run it from anywhere:
+
 ```bash
-pixel-chat
+# Start the LLM inference
+pixel-ai run
 ```
 
-Otherwise, use the manual command:
+Alternatively, to run the **AI Mirror Chat UI**:
 ```bash
 python src/run_ai_mirror.py
 ```
 
-**Commands inside chat:**
-- `/reset`: Clear Pixel's memory and start a fresh topic.
-- `quit`: Exit the system.
+**CLI Commands:**
+- `pixel-ai install`: Downloads the latest Qwen2.5 GGUF model.
+- `pixel-ai run`: Simple terminal-based inference.
 
 ---
 
