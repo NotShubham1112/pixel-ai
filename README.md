@@ -52,47 +52,40 @@ llmemo/
 
 ## 🚀 Quick Start
 
-### 1. Installation & Setup
-The fastest way for others to install **Pixel-AI** is directly from PyPI:
+**Pixel AI** is optimized for both desktop testing and low-power hardware like the Raspberry Pi.
+
+### 🍎 1. Installation (Raspberry Pi / Linux / Mac)
+Open your terminal and run:
 
 ```bash
-# 1. Install the package
+# Install the official package
 pip install pixel-ai
 
-# 2. Download the model (350MB)
+# Download the model weights (~350MB)
 pixel-ai install
-```
 
-> [!TIP]
-> This is now the official, recommended way to install Pixel-AI!
-
-### 2. Run the System
-Once installed, you can run it from anywhere:
-
-```bash
-# Start the LLM inference
+# Start learning!
 pixel-ai run
 ```
 
-### 🛠 Troubleshooting (Windows)
-If you see `pixel-ai : The term 'pixel-ai' is not recognized`, use the direct python command instead:
+---
+
+### 🪟 2. Installation (Windows)
+Open PowerShell or Command Prompt and run:
 
 ```powershell
+# 1. Install the package
+pip install pixel-ai
+
+# 2. Download the model weights
 python -m pixel_ai.cli install
+
+# 3. Start chatting!
 python -m pixel_ai.cli run
 ```
 
 > [!TIP]
-> This happens because your Python Scripts folder isn't in your Windows PATH. Using `python -m pixel_ai.cli` always works as long as `python` works!
-
-Alternatively, to run the **AI Mirror Chat UI**:
-```bash
-python src/run_ai_mirror.py
-```
-
-**CLI Commands:**
-- `pixel-ai install`: Downloads the latest Qwen2.5 GGUF model.
-- `pixel-ai run`: Simple terminal-based inference.
+> **Windows Note:** If `pixel-ai` as a command doesn't work, it's because your Scripts folder isn't in your Windows PATH. Using `python -m pixel_ai.cli` always works as long as `python` works!
 
 ---
 
